@@ -11,7 +11,6 @@ result = session_requests.post(login_url , data = payload , headers = dict(Refer
 def Get_Results(page,price):
     list = ["https://www.car.gr/classifieds/cars/?category=18&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&make=22&make=22&offer_type=sale&pg=",str(page),"&price-to=%3C",str(price)]
     url = ''.join(list)
-    print page , isinstance(page, int) , url ,"\n"
     site = session_requests.get(url)
     data = site.content
     return data
@@ -29,9 +28,9 @@ numb_veh = int(n[:space])
 print "Vehicles available in your crateria : "+str(numb_veh)
 
 # Find number of pages
-link = '<li class="disabled"><a>…</a></li>'#<li class=""><a href="/classifieds/cars/?category=18&amp;condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&amp;make=22&amp;offer_type=sale&amp;'
+link = '<li class="disabled"><a>…</a></li>'
 start = data[0:].find(link)
-start1 = data[start:].find('<a href="/classifieds/cars/?category=18')##&amp;condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&amp;make=22&amp;offer_type=sale&amp;')
+start1 = data[start:].find('<a href="/classifieds/cars/?category=18')
 start2 = data[start1+start:].find('>')
 end = data[start1+start:].find('</a>')
 numb_of_pages = data[start+start1+start2+1:start+start1+end]
@@ -41,7 +40,6 @@ try:
     int(numb_of_pages)
 except:
     numb_of_pages = 1
-print numb_of_pages
 
 # Find prices
 def Get_Data(a):
