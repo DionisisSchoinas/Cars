@@ -8,15 +8,15 @@ login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
 
 # Get results
-def Get_Results(page,price):
-    list = ["https://www.car.gr/classifieds/cars/?category=18&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&make=22&make=22&offer_type=sale&pg=",str(page),"&price-to=%3C",str(price)]
+def Get_Results(page):
+    list = ["https://www.car.gr/classifieds/cars/?category=18&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&make=22&make=22&offer_type=sale&pg=",str(page),"&price-to=%3C",str(pricing)]
     url = ''.join(list)
     site = session_requests.get(url)
     data = site.content
     return data
     
-price = int(raw_input("Give max price for car : \n"))
-data = Get_Results(1,price)
+pricing = int(raw_input("Give max price for car : \n"))
+data = Get_Results(1)
 
 # Find number of vehicles
 start1 = data[0:].find('<li class="disabled"><a><strong>')
@@ -25,11 +25,11 @@ end = data[start1:].find('</strong></a></li>')
 n = data[start1+start2+1:start1+end]
 space = n.find(" ")
 numb_veh = int(n[:space])
-print "Vehicles available in your crateria : "+str(numb_veh)
+print "Vehicles available under your crateria : "+str(numb_veh)
 
 # Find prices
 def Get_Data(a):
-    start1 = data[0:].find('<span itemprop="%s">'%a)
+    start1 = data[0:].find('<span itemprop="%s"'%a)
     start2 = data[start1:].find('>')
     end = data[start1:].find('</span>')
     word = data[start1+start2+1:start1+end]
@@ -43,7 +43,7 @@ for i in range(numb_of_pages):
     k = 0
     if i!=0:
         # Get results for more pages
-        data = Get_Results(i+1,price)
+        data = Get_Results(i+1)
     if numb_of_pages==1:
         loop_j = numb_veh
     elif numb_of_pages>1:
