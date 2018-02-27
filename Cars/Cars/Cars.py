@@ -1,5 +1,8 @@
 import requests
 import json
+import os
+import time
+clear = lambda: os.system('cls')
 
 # Login
 payload = {"username":"schinasdionisis@gmail.com","password":"fo04111999"}
@@ -15,33 +18,41 @@ filters = {1:"&condition=%CE%9A%CE%B1%CE%B9%CE%BD%CE%BF%CF%8D%CF%81%CE%B9%CE%BF"
            4:"&offer_type=wanted",
            5:"&offer_type=rent"}
 go = True
-filter=""
+f = []
+fa = []
 while True:
-    if go == True:
-        print "Give filters :"
-        print " 1 - kainourgio"
-        print " 2 - metaxeirismeno"
-        print " 3 - pwleitai"
-        print " 4 - zhteitai"
-        print " 5 - enoikiazetai"
-        if filter=="":
-            print " 6 - no filter"
-        f = raw_input()
-        if f=="6":
-            break
-        try:
-            filter = filter+filters[int(f)]
-        except:
-            print "Input must be : 1 or 2 or 3 or 4 or 5"
-            continue
+    if len(f)==5:
+        print "\n- All filters are selected -"
+        break
+    clear()
+    print "Give filters :"
+    print "  1 - kainourgio"
+    print "  2 - metaxeirismeno"
+    print "  3 - pwleitai"
+    print "  4 - zhteitai"
+    print "  5 - enoikiazetai"
+    if len(f)==0:
+        print "  6 - no filter"
+    i = raw_input()
+    if i in fa:
+        print " Give filter's code only once"
+        time.sleep(2)
+        continue
+    if i=="6":
+        break
+    try:
+        f.append(str(filters[int(i)]))
+        fa.append(i)
+    except:
+        print "Input must be : 1 or 2 or 3 or 4 or 5"
+        time.sleep(2)
+        continue
     cont = raw_input("Add more filters ? ( yes / no )\n")
     if cont[0]=="Y" or cont[0]=="y":
         continue
     elif cont[0]=="N" or cont[0]=="n":
         break
-    else:
-        print " yes or no"
-        go == False
+filter = ''.join(f)
 
 # Get results
 def Get_Results(page):
@@ -102,5 +113,6 @@ for i in range(numb_of_pages):
     numb_of_pages -= 1
 
 # Print results
+clear()
 for i in range(len(vehicles)):
     print vehicles[i]
