@@ -27,20 +27,6 @@ space = n.find(" ")
 numb_veh = int(n[:space])
 print "Vehicles available in your crateria : "+str(numb_veh)
 
-# Find number of pages
-link = '<li class="disabled"><a>…</a></li>'
-start = data[0:].find(link)
-start1 = data[start:].find('<a href="/classifieds/cars/?category=18')
-start2 = data[start1+start:].find('>')
-end = data[start1+start:].find('</a>')
-numb_of_pages = data[start+start1+start2+1:start+start1+end]
-
-# Check for extra pages
-try:
-    int(numb_of_pages)
-except:
-    numb_of_pages = 1
-
 # Find prices
 def Get_Data(a):
     start1 = data[0:].find('<span itemprop="%s">'%a)
@@ -52,12 +38,16 @@ def Get_Data(a):
     return b
 
 vehicles = []
-loop_j = numb_veh/int(numb_of_pages)+1
-k = 0
-for i in range(int(numb_of_pages)):
+numb_of_pages = numb_veh/15+1
+for i in range(numb_of_pages):
+    k = 0
     if i!=0:
         # Get results for more pages
         data = Get_Results(i+1,price)
+    if numb_of_pages==1:
+        loop_j = numb_veh
+    elif numb_of_pages>1:
+        loop_j = 15
     for j in range(loop_j):
         k+=1
         start1 = data[0:].find('<span itemprop="price"')
@@ -72,6 +62,10 @@ for i in range(int(numb_of_pages)):
         model = Get_Data("model")
         release_date = Get_Data("releaseDate")
         data = data[start1+end:]
-        vehicles.append([k,cost,brand,model,release_date])
-for i in range(numb_veh):
+        vehicles.append([cost,brand,model,release_date])
+    numb_veh -= k
+    numb_of_pages -= 1
+
+# Print results
+for i in range(len(vehicles)):
     print vehicles[i]
