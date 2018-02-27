@@ -4,11 +4,13 @@ import os
 import time
 clear = lambda: os.system('cls')
 
+
 # Login
 payload = {"username":"schinasdionisis@gmail.com","password":"fo04111999"}
 session_requests = requests.session()
 login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
+
 
 # Get info from user
 pricing = int(raw_input("Give max price for car : \n"))
@@ -54,6 +56,7 @@ while True:
         break
 filter = ''.join(f)
 
+
 # Get results
 def Get_Results(page):
     list = ["https://www.car.gr/classifieds/cars/?category=18",filter,"&pg=",str(page),"&price-to=%3C",str(pricing)]
@@ -64,6 +67,7 @@ def Get_Results(page):
 
 data = Get_Results(1)
 
+
 # Find number of vehicles
 start1 = data[0:].find('<li class="disabled"><a><strong>')
 start2 = data[start1:].find('g>')+1
@@ -71,7 +75,9 @@ end = data[start1:].find('</strong></a></li>')
 n = data[start1+start2+1:start1+end]
 space = n.find(" ")
 numb_veh = int(n[:space])
+clear()
 print "Vehicles available under your crateria : "+str(numb_veh)
+
 
 # Find prices
 def Get_Data(a):
@@ -111,6 +117,7 @@ for i in range(numb_of_pages):
         vehicles.append([cost,brand,model,release_date])
     numb_veh -= k
     numb_of_pages -= 1
+
 
 # Print results
 clear()
