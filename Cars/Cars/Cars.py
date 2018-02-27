@@ -7,15 +7,50 @@ session_requests = requests.session()
 login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
 
+# Get info from user
+pricing = int(raw_input("Give max price for car : \n"))
+filters = {1:"&condition=%CE%9A%CE%B1%CE%B9%CE%BD%CE%BF%CF%8D%CF%81%CE%B9%CE%BF",
+           2:"&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF",
+           3:"&offer_type=sale",
+           4:"&offer_type=wanted",
+           5:"&offer_type=rent"}
+go = True
+filter=""
+while True:
+    if go == True:
+        print "Give filters :"
+        print " 1 - kainourgio"
+        print " 2 - metaxeirismeno"
+        print " 3 - pwleitai"
+        print " 4 - zhteitai"
+        print " 5 - enoikiazetai"
+        if filter=="":
+            print " 6 - no filter"
+        f = raw_input()
+        if f=="6":
+            break
+        try:
+            filter = filter+filters[int(f)]
+        except:
+            print "Input must be : 1 or 2 or 3 or 4 or 5"
+            continue
+    cont = raw_input("Add more filters ? ( yes / no )\n")
+    if cont[0]=="Y" or cont[0]=="y":
+        continue
+    elif cont[0]=="N" or cont[0]=="n":
+        break
+    else:
+        print " yes or no"
+        go == False
+
 # Get results
 def Get_Results(page):
-    list = ["https://www.car.gr/classifieds/cars/?category=18&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF&make=22&make=22&offer_type=sale&pg=",str(page),"&price-to=%3C",str(pricing)]
+    list = ["https://www.car.gr/classifieds/cars/?category=18",filter,"&pg=",str(page),"&price-to=%3C",str(pricing)]
     url = ''.join(list)
     site = session_requests.get(url)
     data = site.content
     return data
-    
-pricing = int(raw_input("Give max price for car : \n"))
+
 data = Get_Results(1)
 
 # Find number of vehicles
