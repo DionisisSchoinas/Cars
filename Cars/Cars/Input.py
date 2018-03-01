@@ -1,8 +1,9 @@
 import os
 import time
 clear = lambda: os.system('cls')
-# Get info from user
-def Get_Info():
+
+# Get Price from user
+def Get_Price():
     while True:
         price = raw_input("Give max price for car : \n")
         if price ==" ":
@@ -10,9 +11,14 @@ def Get_Info():
             continue
         try:
             pricing = int(price)
+            return pricing
         except:
             print " Give an integer"
             continue
+
+# Get Market Filers from user
+def Get_Market_Filters():
+    while True:
         filters = {1:"&condition=%CE%9A%CE%B1%CE%B9%CE%BD%CE%BF%CF%8D%CF%81%CE%B9%CE%BF",
                    2:"&condition=%CE%9C%CE%B5%CF%84%CE%B1%CF%87%CE%B5%CE%B9%CF%81%CE%B9%CF%83%CE%BC%CE%AD%CE%BD%CE%BF",
                    3:"&offer_type=sale",
@@ -66,4 +72,4 @@ def Get_Info():
             elif cont[0]=="N" or cont[0]=="n":
                 break
         break
-    return [f,pricing]
+    return f

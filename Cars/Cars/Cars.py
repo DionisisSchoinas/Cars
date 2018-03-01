@@ -5,7 +5,6 @@ import time
 import Input
 clear = lambda: os.system('cls')
 
-
 # Login
 payload = {"username":"schinasdionisis@gmail.com","password":"fo04111999"}
 session_requests = requests.session()
@@ -13,9 +12,10 @@ login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
 
 # Getting info with Input module
-f = Input.Get_Info()
-filter = ''.join(f[0])
-pricing = f[1]
+pricing = Input.Get_Price()
+f = Input.Get_Market_Filters()
+filter = ''.join(f)
+
 
 # Get results
 def Get_Results(page):
@@ -81,5 +81,6 @@ for i in range(numb_of_pages):
 
 # Print results
 clear()
+print "Vehicles available under your crateria : "+str(len(vehicles))
 for i in range(len(vehicles)):
     print vehicles[i]
