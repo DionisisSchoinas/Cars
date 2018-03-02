@@ -12,6 +12,14 @@ login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
 
 # Getting info with Input module
+
+# Create Dictionary for mark
+site = session_requests.get("https://www.car.gr/classifieds/cars/?sort=dm")
+data = site.content
+dictionary_mark = {}
+Input.Fill_Dictionary(data,dictionary_mark)
+f = Input.Get_Mark(dictionary_mark)
+filter_brand = ''.join(f)
 price_min = Input.Get_Price_Min()
 price_max = Input.Get_Price_Max(price_min)
 date_start = Input.Get_Starting_Year()
@@ -23,7 +31,7 @@ filter_cat = ''.join(f)
 
 # Get results
 def Get_Results(page):
-    list = ["https://www.car.gr/classifieds/cars/?sort=dm",filter_cat,"",filter_market,"&pg=",str(page),"&price=%3E",str(price_min),"&price-to=%3C",str(price_max),"&registration=%3E",date_start,"&registration=%3C",date_end]
+    list = ["https://www.car.gr/classifieds/cars/?sort=dm",filter_cat,filter_market,filter_brand,"&pg=",str(page),"&price=%3E",str(price_min),"&price-to=%3C",str(price_max),"&registration=%3E",date_start,"&registration=%3C",date_end]
     url = ''.join(list)
     site = session_requests.get(url)
     data = site.content
@@ -43,7 +51,7 @@ clear()
 print "Vehicles available under your crateria : "+str(numb_veh)
 
 
-# Find prices
+# Find Price / Brand / Model / Year
 def Get_Data(a):
     start1 = data[0:].find('<span itemprop="%s"'%a)
     start2 = data[start1:].find('>')
