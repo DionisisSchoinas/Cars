@@ -12,14 +12,17 @@ login_url = "https://www.car.gr/login/"
 result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
 
 # Getting info with Input module
-pricing = Input.Get_Price()
+price_min = Input.Get_Price_Min()
+price_max = Input.Get_Price_Max()
 f = Input.Get_Market_Filters()
-filter = ''.join(f)
+filter_market = ''.join(f)
+f = Input.Get_Category()
+filter_cat = ''.join(f)
 
 
 # Get results
 def Get_Results(page):
-    list = ["https://www.car.gr/classifieds/cars/?category=18",filter,"&pg=",str(page),"&price-to=%3C",str(pricing)]
+    list = ["https://www.car.gr/classifieds/cars/?sort=dm",filter_cat,"",filter_market,"&pg=",str(page),"&price=%3E",str(price_min),"&price-to=%3C",str(price_max)]
     url = ''.join(list)
     site = session_requests.get(url)
     data = site.content
