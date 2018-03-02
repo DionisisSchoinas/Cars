@@ -13,16 +13,17 @@ result = session_requests.post(login_url , data = payload , headers = dict(Refer
 
 # Getting info with Input module
 price_min = Input.Get_Price_Min()
-price_max = Input.Get_Price_Max()
+price_max = Input.Get_Price_Max(price_min)
+date_start = Input.Get_Starting_Year()
+date_end = Input.Get_Ending_Year(date_start)
 f = Input.Get_Market_Filters()
 filter_market = ''.join(f)
 f = Input.Get_Category()
 filter_cat = ''.join(f)
 
-
 # Get results
 def Get_Results(page):
-    list = ["https://www.car.gr/classifieds/cars/?sort=dm",filter_cat,"",filter_market,"&pg=",str(page),"&price=%3E",str(price_min),"&price-to=%3C",str(price_max)]
+    list = ["https://www.car.gr/classifieds/cars/?sort=dm",filter_cat,"",filter_market,"&pg=",str(page),"&price=%3E",str(price_min),"&price-to=%3C",str(price_max),"&registration=%3E",date_start,"&registration=%3C",date_end]
     url = ''.join(list)
     site = session_requests.get(url)
     data = site.content

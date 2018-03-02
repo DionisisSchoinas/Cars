@@ -3,36 +3,80 @@ import time
 clear = lambda: os.system('cls')
 
 
-# Get Price from user
+# Get Min Price from user
 def Get_Price_Min():
     while True:
         clear()
         price = raw_input("Give min price for car : \n")
         if price ==" ":
             print " You have to give something"
+            time.sleep(2)
             continue
         try:
             price = int(price)
             return price
         except:
             print " Give an integer"
+            time.sleep(2)
             continue
         break
-def Get_Price_Max():
+
+# Get Min Price from user
+def Get_Price_Max(start):
     while True:
         clear()
         price = raw_input("Give max price for car : \n")
         if price ==" ":
             print " You have to give something"
+            time.sleep(2)
             continue
         try:
             price = int(price)
+            if price < start:
+                print " Max price can't be lower than min price"
+                time.sleep(2)
+                continue
             return price
         except:
             print " Give an integer"
+            time.sleep(2)
             continue
         break
-    
+
+# Get Starting Year from user
+def Get_Starting_Year():
+    while True:
+        clear()
+        date = raw_input("Give starting year for search ( ex. 1950 ) : \n")
+        if date ==" ":
+            print " You have to give something"
+            time.sleep(2)
+            continue
+        elif len(date)!=4:
+            print " Date must be 4 numbers ( ex. 1949 )"
+            time.sleep(2)
+            continue
+        return date
+
+# Get Ending Year from user
+def Get_Ending_Year(start):
+    while True:
+        clear()
+        date = raw_input("Give ending year for search ( ex. 1990 ) : \n")
+        if date ==" ":
+            print " You have to give something"
+            time.sleep(2)
+            continue
+        elif len(date)!=4:
+            print " Date must be 4 numbers ( ex. 1998 )"
+            time.sleep(2)
+            continue
+        elif start > date:
+            print " Ending year can't be before starting year"
+            time.sleep(2)
+            continue
+        return date
+
 # Get Market Filters from user
 def Get_Market_Filters():
     filters = {1:"&condition=%CE%9A%CE%B1%CE%B9%CE%BD%CE%BF%CF%8D%CF%81%CE%B9%CE%BF",
