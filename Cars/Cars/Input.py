@@ -7,11 +7,13 @@ clear = lambda: os.system('cls')
 def Get_Price_Min():
     while True:
         clear()
-        price = raw_input("Give min price for car : \n")
+        price = raw_input("Give min price for car ( 0 for no filter ) : \n")
         if price ==" ":
             print " You have to give something"
             time.sleep(2)
             continue
+        elif price=="0":
+            return price
         try:
             price = int(price)
             return price
@@ -25,11 +27,14 @@ def Get_Price_Min():
 def Get_Price_Max(start):
     while True:
         clear()
-        price = raw_input("Give max price for car : \n")
+        price = raw_input("Give max price for car ( 0 for no filter ) : \n")
         if price ==" ":
             print " You have to give something"
             time.sleep(2)
             continue
+        elif price=="0":
+            a = 1000000
+            return a
         try:
             price = int(price)
             if price < start:
@@ -47,11 +52,13 @@ def Get_Price_Max(start):
 def Get_Starting_Year():
     while True:
         clear()
-        date = raw_input("Give starting year for search ( ex. 1950 ) : \n")
+        date = raw_input("Give starting year for search ( ex. 1950 ) ( 0 for no filter ) : \n")
         if date ==" ":
             print " You have to give something"
             time.sleep(2)
             continue
+        elif date=="0":
+            return "1800"
         elif len(date)!=4:
             print " Date must be 4 numbers ( ex. 1949 )"
             time.sleep(2)
@@ -62,11 +69,13 @@ def Get_Starting_Year():
 def Get_Ending_Year(start):
     while True:
         clear()
-        date = raw_input("Give ending year for search ( ex. 1990 ) : \n")
+        date = raw_input("Give ending year for search ( ex. 1990 ) ( 0 for no filter ) : \n")
         if date ==" ":
             print " You have to give something"
             time.sleep(2)
             continue
+        elif date=="0":
+            return "3000"
         elif len(date)!=4:
             print " Date must be 4 numbers ( ex. 1998 )"
             time.sleep(2)
