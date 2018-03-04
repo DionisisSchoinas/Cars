@@ -33,12 +33,13 @@ def Fill_Dictionary(data,dictionary_mark):
     dictionary_mark["Other"] = "0"
 
 # Complete dictionary for model
-def Fill_Dictionary_Model(data,dictionary_model,first_brand):
-    brand_next = first_brand
+def Fill_Dictionary_Model(data,dictionary_model,brand):
+    brand_next = brand[0]
     # Get code
     start0 = data.find('<ul class="facets-multi-select-container model-list">')
     end_final = start0+data[start0:].find('</ul>')
     k=0
+    m=0
     stop = False
     last = False
     while True:
@@ -48,22 +49,18 @@ def Fill_Dictionary_Model(data,dictionary_model,first_brand):
         # Find which brand the models refer to
         str_ending = '<li class="multi-select-option-group">'
         end1 = data[start0:].find(str_ending)
-        print end1
         if str(end1)=="-1":
             end_final = start0+data[start0:].find('</ul>')
-            brand = brand_next
+            b = brand_next
             last = True
-            print "1"
         else:
-            print "2"
             end_final = start0+end1
             end2 = data[start0+end1:].find('<span>')+6
             end3 = data[start0+end1:].find('</span>')
             brand_next = data[start0+end1+end2:start0+end1+end3]
-            print end_final,end2,end3,brand_next
-            if brand!=brand_next and stop:
+            if (brand_next in brand) and stop:
                 stop = not(stop)
-                brand = brand_next           
+                b = brand.index(brand_next)         
         end = data[start+start1+len(str1):].find('"')
         code = data[start+start1+len(str1):start+start1+len(str1)+end]
         # Get mark
@@ -83,15 +80,15 @@ def Fill_Dictionary_Model(data,dictionary_model,first_brand):
         mark = mark.title()
         # Fill dictionary
         start0 = start_mark+start1+end
-        print stop , last
         if k>=2:
             if int(start0) >= int(end_final):
-                if stop and last:
+                if (stop and last) or m>=len(brand):
                     break
                 else:
+                    m+=1
                     stop = not(stop)
         if len(mark)<=10:
-            keys=(mark,brand)
+            keys=(mark,brand[m])
             dictionary_model[keys] = code      
             k+=1
 
@@ -228,10 +225,21 @@ def Get_Market_Filters():
                 print " You have to give something"    
             else:    
                 break    
-        if cont[0].upper()=="Y":    
-            continue    
-        elif cont[0].upper()=="N":    
-            break       
+        try:
+            if cont[0].upper()=="Y":    
+                continue    
+            elif cont[0].upper()=="N":    
+                break     
+            else:
+                print " yes or no "
+                f.pop()
+                fa.pop()
+                time.sleep(2)
+        except:
+            print " You have to give something"
+            f.pop()
+            fa.pop()
+            time.sleep(2)         
     return f
 
 # Get Category filters from user
@@ -296,14 +304,25 @@ def Get_Category():
                 print " You have to give something"    
             else:    
                 break    
-        if cont[0].upper()=="Y":    
-            continue    
-        elif cont[0].upper()=="N":    
-            break 
+        try:
+            if cont[0].upper()=="Y":    
+                continue    
+            elif cont[0].upper()=="N":    
+                break     
+            else:
+                print " yes or no "
+                f.pop()
+                fa.pop()
+                time.sleep(2)
+        except:
+            print " You have to give something"
+            f.pop()
+            fa.pop()
+            time.sleep(2)  
     return f       
 
 # Get Brand Filters from user
-def Get_Mark(dictionary_mark):
+def Get_Brand(dictionary_mark):
     f = []
     fa = []
     brand_out = []
@@ -351,10 +370,23 @@ def Get_Mark(dictionary_mark):
                 print " You have to give something"    
             else:    
                 break    
-        if cont[0].upper()=="Y":    
-            continue    
-        elif cont[0].upper()=="N":    
-            break       
+        try:
+            if cont[0].upper()=="Y":    
+                continue    
+            elif cont[0].upper()=="N":    
+                break     
+            else:
+                print " yes or no "
+                f.pop()
+                fa.pop()
+                brand_out.pop()
+                time.sleep(2)
+        except:
+            print " You have to give something"
+            f.pop()
+            fa.pop()
+            brand_out.pop()
+            time.sleep(2)       
     return [f,brand_out]
 
 # Get Model Filters from user
@@ -404,8 +436,19 @@ def Get_Model(dictionary_model,brands):
                     print " You have to give something"    
                 else:    
                     break    
-            if cont[0].upper()=="Y":    
-                continue    
-            elif cont[0].upper()=="N":    
-                break       
+            try:
+                if cont[0].upper()=="Y":    
+                    continue    
+                elif cont[0].upper()=="N":    
+                    break     
+                else:
+                    print " yes or no "
+                    f.pop()
+                    fa.pop()
+                    time.sleep(2)
+            except:
+                print " You have to give something"
+                f.pop()
+                fa.pop()
+                time.sleep(2)
     return f

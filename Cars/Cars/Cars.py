@@ -16,7 +16,7 @@ site = session_requests.get("https://www.car.gr/classifieds/cars/?sort=dm")
 data = site.content
 dictionary_mark = {}
 Input.Fill_Dictionary(data,dictionary_mark)
-f = Input.Get_Mark(dictionary_mark)
+f = Input.Get_Brand(dictionary_mark)
 filter_brand = ''.join(f[0])
     # Requesting data with brand filter only
 if filter_brand!="":
@@ -25,8 +25,7 @@ if filter_brand!="":
     site = session_requests.get(url)
     data = site.content
     dictionary_model={}
-    Input.Fill_Dictionary_Model(data,dictionary_model,f[1][0])
-    print dictionary_model
+    Input.Fill_Dictionary_Model(data,dictionary_model,f[1])
     f = Input.Get_Model(dictionary_model,f[1])
     filter_model = ''.join(f)
 price_min = Input.Get_Price_Min()
