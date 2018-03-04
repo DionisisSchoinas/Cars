@@ -33,17 +33,37 @@ def Fill_Dictionary(data,dictionary_mark):
     dictionary_mark["Other"] = "0"
 
 # Complete dictionary for model
-def Fill_Dictionary_Model(data,dictionary_model):
+def Fill_Dictionary_Model(data,dictionary_model,first_brand):
+    brand_next = first_brand
     # Get code
     start0 = data.find('<ul class="facets-multi-select-container model-list">')
     end_final = start0+data[start0:].find('</ul>')
     k=0
+    stop = False
+    last = False
     while True:
         start = start0
         str1 = '<input autocomplete="off" type="checkbox" name="model" '
         start1 = data[start:].find(str1) + 8
-        if k==2:
+        # Find which brand the models refer to
+        str_ending = '<li class="multi-select-option-group">'
+        end1 = data[start0:].find(str_ending)
+        print end1
+        if str(end1)=="-1":
             end_final = start0+data[start0:].find('</ul>')
+            brand = brand_next
+            last = True
+            print "1"
+        else:
+            print "2"
+            end_final = start0+end1
+            end2 = data[start0+end1:].find('<span>')+6
+            end3 = data[start0+end1:].find('</span>')
+            brand_next = data[start0+end1+end2:start0+end1+end3]
+            print end_final,end2,end3,brand_next
+            if brand!=brand_next and stop:
+                stop = not(stop)
+                brand = brand_next           
         end = data[start+start1+len(str1):].find('"')
         code = data[start+start1+len(str1):start+start1+len(str1)+end]
         # Get mark
@@ -63,11 +83,17 @@ def Fill_Dictionary_Model(data,dictionary_model):
         mark = mark.title()
         # Fill dictionary
         start0 = start_mark+start1+end
+        print stop , last
         if k>=2:
             if int(start0) >= int(end_final):
-                break
-        dictionary_model[mark] = code      
-        k+=1
+                if stop and last:
+                    break
+                else:
+                    stop = not(stop)
+        if len(mark)<=10:
+            keys=(mark,brand)
+            dictionary_model[keys] = code      
+            k+=1
 
 # Get Min Price from user
 def Get_Price_Min():
@@ -276,10 +302,11 @@ def Get_Category():
             break 
     return f       
 
-# Get Mark Filters from user
+# Get Brand Filters from user
 def Get_Mark(dictionary_mark):
     f = []
     fa = []
+    brand_out = []
     while True:
         if len(f)==len(dictionary_mark):
             print "\n- All filters are selected -"
@@ -312,7 +339,8 @@ def Get_Mark(dictionary_mark):
             break    
         try:    
             f.append("&make="+dictionary_mark[i])    
-            fa.append(i)    
+            fa.append(i)  
+            brand_out.append(i)
         except:    
             print " This brand doesn't exist in our system"    
             time.sleep(2)    
@@ -327,56 +355,57 @@ def Get_Mark(dictionary_mark):
             continue    
         elif cont[0].upper()=="N":    
             break       
-    return f
+    return [f,brand_out]
 
 # Get Model Filters from user
-def Get_Model(dictionary_model):
+def Get_Model(dictionary_model,brands):
     f = []
-    fa = []
-    while True:
-        if len(f)==len(dictionary_model):
-            print "\n- All filters are selected -"
-            break        
-        clear()
-        print "You have "+str(len(f))+" filters"
-        if len(f)==0:    
-            print "  1 - no filter\n"  
-        else:    
-            print "  1 - finished with the filters\n"
-        while True:        
-            i = raw_input(" Give car's model :\n")    
-            if i==" ":    
-                print " You have to give something"    
+    for j in brands:
+        fa = []
+        while True:
+            if len(f)==len(dictionary_model):
+                print "\n- All filters are selected -"
+                break        
+            clear()
+            print "You have "+str(len(f))+" filters"
+            if len(f)==0:    
+                print "  1 - no filter\n"  
             else:    
-                break  
-        if i.find(" ")!=-1:
-            a = i.split(" ")
-            i = ''.join(a)
-        if i.find("-")!=-1:
-            a = i.split("-")
-            i = ''.join(a)
-        i = i.title()
-        if i in fa:        
-            print " Give car's model only once"    
-            time.sleep(2)    
-            continue    
-        if i=="1":    
-            break    
-        try:    
-            f.append("&model="+dictionary_model[i])    
-            fa.append(i)    
-        except:    
-            print " This brand doesn't exist in our system"    
-            time.sleep(2)    
-            continue     
-        while True:    
-            cont = raw_input(" Add more brands ? ( yes / no )\n")    
-            if cont==" ":    
-                print " You have to give something"    
-            else:    
+                print "  1 - finished with the filters\n"
+            while True:        
+                i = raw_input(" Give "+j+"'s model :\n")    
+                if i==" ":    
+                    print " You have to give something"    
+                else:    
+                    break  
+            if i.find(" ")!=-1:
+                a = i.split(" ")
+                i = ''.join(a)
+            if i.find("-")!=-1:
+                a = i.split("-")
+                i = ''.join(a)
+            i = i.title()
+            if i in fa:        
+                print " Give car's model only once"    
+                time.sleep(2)    
+                continue    
+            if i=="1":    
                 break    
-        if cont[0].upper()=="Y":    
-            continue    
-        elif cont[0].upper()=="N":    
-            break       
+            try:    
+                f.append("&model="+dictionary_model[(i,j)])    
+                fa.append(i)    
+            except:    
+                print " This model doesn't exist in our system"    
+                time.sleep(2)    
+                continue     
+            while True:    
+                cont = raw_input(" Add more models ? ( yes / no )\n")    
+                if cont==" ":    
+                    print " You have to give something"    
+                else:    
+                    break    
+            if cont[0].upper()=="Y":    
+                continue    
+            elif cont[0].upper()=="N":    
+                break       
     return f
