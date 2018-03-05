@@ -28,6 +28,8 @@ if filter_brand!="":
     Input.Fill_Dictionary_Model(data,dictionary_model,f[1])
     f = Input.Get_Model(dictionary_model,f[1])
     filter_model = ''.join(f)
+else:
+    filter_model =" "
 price_min = Input.Get_Price_Min()
 price_max = Input.Get_Price_Max(price_min)
 date_start = Input.Get_Starting_Year()
@@ -59,7 +61,7 @@ clear()
 print "Vehicles available under your crateria : "+str(numb_veh)
 
 
-# Find Price / Brand / Model / Year
+# Find Brand / Model / Year
 def Get_Data(a):
     start1 = data[0:].find('<span itemprop="%s"'%a)
     start2 = data[start1:].find('>')
@@ -68,6 +70,15 @@ def Get_Data(a):
     start3 = word.find(';')
     b = word[start3+1:]
     return b
+
+
+# Find Url for vehicle page
+def Get_URL():
+    end = data.find('" class="vehicle list-group-item')
+    start = data[end-80:end].find('<a href="')+9
+    short_url = data[start+end-80:end]
+    full_url = 'https://www.car.gr'+short_url
+    return full_url
 
 vehicles = []
 numb_of_pages = numb_veh/15+1
@@ -82,6 +93,7 @@ for i in range(numb_of_pages):
         loop_j = 15
     for j in range(loop_j):
         k+=1
+        url = Get_URL()
         start1 = data[0:].find('<span itemprop="price"')
         start2 = data[start1:].find('>')
         end = data[start1:].find('</span>')
@@ -94,7 +106,7 @@ for i in range(numb_of_pages):
         model = Get_Data("model")
         release_date = Get_Data("releaseDate")
         data = data[start1+end:]
-        vehicles.append([cost,brand,model,release_date])
+        vehicles.append([cost,brand,model,release_date,url])
     numb_veh -= k
     numb_of_pages -= 1
 
