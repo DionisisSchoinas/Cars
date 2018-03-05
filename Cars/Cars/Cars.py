@@ -6,10 +6,9 @@ import Input
 clear = lambda: os.system('cls')
 
 # Login
-payload = {"username":"schinasdionisis@gmail.com","password":"fo04111999"}
 session_requests = requests.session()
 login_url = "https://www.car.gr/login/"
-result = session_requests.post(login_url , data = payload , headers = dict(ReferenceError=login_url))
+result = session_requests.post(login_url , headers = dict(ReferenceError=login_url))
 
 # Getting info with Input module
 site = session_requests.get("https://www.car.gr/classifieds/cars/?sort=dm")
