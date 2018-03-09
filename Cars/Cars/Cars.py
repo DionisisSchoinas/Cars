@@ -34,7 +34,10 @@ if response==0:
     else:
         filter_model =" "
     price_min = Input.Get_Price_Min()
-    price_max = Input.Get_Price_Max(price_min)
+    if price_min!=" ":
+        price_max = Input.Get_Price_Max(price_min)
+    else:
+        price_max = Input.Get_Price_Max(0)
     date_start = Input.Get_Starting_Year()
     date_end = Input.Get_Ending_Year(date_start)
     f = Input.Get_Market_Filters()
