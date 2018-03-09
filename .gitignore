@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 Cars/Cars/Cars.pyproj
 Cars/Cars.sln
+*.pyproj
