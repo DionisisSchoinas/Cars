@@ -102,7 +102,7 @@ def Get_Price_Min():
             time.sleep(2)
             continue
         elif price=="0":
-            return price
+            return " "
         try:
             price = int(price)
             return price
