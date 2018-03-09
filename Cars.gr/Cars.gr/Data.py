@@ -7,11 +7,11 @@ import Input
 clear = lambda: os.system('cls')
 hostname = "www.car.gr"
 response = os.system("ping -n 1 " + hostname)
+session_requests = requests.session()
 
 def Make_Filters():
     if response==0:
         # Login
-        session_requests = requests.session()
         login_url = "https://www.car.gr/login/"
         result = session_requests.post(login_url , headers = dict(ReferenceError=login_url))
 

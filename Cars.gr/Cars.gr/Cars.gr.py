@@ -2,13 +2,18 @@ import Tkinter as tk
 import os
 import Data
 
+clear = lambda: os.system('cls')
+clear()
 filters = []
 def filter():
-    filters = Data.Make_Filters()
-    print filters
+    b = Data.Make_Filters()
+    for i in range(8):
+        filters.append(b[i])
 def Start_search():
-    print filters
-    Data.Search(filters)
+    if filters != []:
+        Data.Search(filters)
+    else:
+        print " Give filters before trying to search"
 root = tk.Tk()
 frame = tk.Frame(root)
 frame.pack()
