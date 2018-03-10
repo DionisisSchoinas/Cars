@@ -75,8 +75,6 @@ def Search(filter_list):
         n = data[start1+start2+1:start1+end]
         space = n.find(" ")
         numb_veh = int(n[:space])
-        clear()
-        print "Vehicles available under your crateria : "+str(numb_veh)
 
 
         # Find Brand / Model / Year
@@ -131,9 +129,9 @@ def Search(filter_list):
 
         # Print results
         clear()
-        print "Vehicles available under your crateria : "+str(len(vehicles))
-        for i in range(len(vehicles)):
-            print vehicles[i]
+        print " Vehicles available under your crateria : "+str(len(vehicles))
+        time.sleep(3)
+        return vehicles
     else:
         print " ! No internet connection or servers are down !"
 
